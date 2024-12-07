@@ -72,7 +72,7 @@ class ProposalController extends Controller
         $proposal = Proposal::findOrFail($id);
         $dosen = Dosen::all();
 
-        Log::info('Proposal yang akan diedit ditemukan.', ['proposal' => $proposal]);
+        Log::info('Data dosen yang tersedia.', ['dosen' => $dosen]);
 
         return view('admin.edit', compact('proposal', 'dosen'));
     }
@@ -81,9 +81,10 @@ class ProposalController extends Controller
     public function update(Request $request, $id)
     {
         Log::info('Proses update data proposal dimulai.', ['id' => $id]);
+        Log::info('Data yang diterima untuk update:', $request->all());
 
         $request->validate([
-            'dospem' => 'required|string|max:255',
+            'dospem_id' => 'required|exists:dosen,id', // Validasi ID dosen
             'status' => 'required|string|in:Diterima,Revisi',
             'pesan' => 'nullable|string|max:500',
         ]);
@@ -95,7 +96,7 @@ class ProposalController extends Controller
 
         // Update proposal
         $proposal->update([
-            'dospem' => $request->dospem,
+            'dospem_id' => $request->dospem_id, // Menyimpan ID dosen pembimbing
             'status' => $request->status,
             'pesan' => $request->pesan,
         ]);

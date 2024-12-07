@@ -18,14 +18,13 @@ class CreateProposalsTable extends Migration
             $table->string('nama');
             $table->string('npm');
             $table->string('judul');
-            $table->unsignedBigInteger('dospem_id')->nullable(); // Menggunakan unsignedBigInteger untuk relasi ke dosen
+            $table->unsignedBigInteger('dospem_id')->nullable();
             $table->enum('status', ['Menunggu', 'Diterima', 'Revisi'])->default('Menunggu');
             $table->text('pesan')->nullable();
             $table->string('file_proposal')->nullable();
             $table->timestamps();
 
-            // Menambahkan foreign key
-            $table->foreign('dospem')->references('id')->on('dosen')->onDelete('set null');
+            $table->foreign('dospem_id')->references('id')->on('dosen')->onDelete('set null');
         });
     }
 
