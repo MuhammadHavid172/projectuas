@@ -41,10 +41,10 @@
                 </div>
 
                 <!-- Pilih Dosen -->
-                <select name="dospem" id="dosen" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
+                <select name="dospem_id" id="dosen" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" required>
                     <option value="">-- Pilih Dosen --</option>
                     @foreach($dosen as $d)
-                        <option value="{{ $d->id }}" {{ old('dospem', $proposal->dospem) == $d->id ? 'selected' : '' }}>
+                        <option value="{{ $d->id }}" {{ old('dospem_id', $proposal->dospem_id) == $d->id ? 'selected' : '' }}>
                             {{ $d->nama }}
                         </option>
                     @endforeach
