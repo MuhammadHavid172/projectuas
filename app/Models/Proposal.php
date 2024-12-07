@@ -13,13 +13,13 @@ class Proposal extends Model
         'npm',
         'judul',
         'file_proposal',
-        'dospem',
+        'dospem_id',
         'status',
         'pesan',
     ];
 
     public function dospem()
     {
-        return $this->belongsTo(Dosen::class, 'dospem');    
+        return $this->belongsTo(Dosen::class, 'dospem_id');
     }
 }

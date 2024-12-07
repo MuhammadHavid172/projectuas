@@ -13,6 +13,6 @@ class Dosen extends Model
 
     public function proposals()
     {
-        return $this->hasMany(Proposal::class, 'dospem');
+        return $this->hasMany(Proposal::class, 'dospem_id');
     }
 }
