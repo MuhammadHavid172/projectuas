@@ -18,7 +18,7 @@ class CreateProposalsTable extends Migration
             $table->string('nama');
             $table->string('npm');
             $table->string('judul');
-            $table->unsignedBigInteger('dospem')->nullable(); // Menggunakan unsignedBigInteger untuk relasi ke dosen
+            $table->unsignedBigInteger('dospem_id')->nullable(); // Menggunakan unsignedBigInteger untuk relasi ke dosen
             $table->enum('status', ['Menunggu', 'Diterima', 'Revisi'])->default('Menunggu');
             $table->text('pesan')->nullable();
             $table->string('file_proposal')->nullable();

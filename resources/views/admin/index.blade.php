@@ -10,8 +10,11 @@
         <!-- Form Pencarian -->
         <div class="mb-4 flex justify-end">
             <form method="GET" action="{{ route('admin.index') }}" class="flex items-center">
-                <input type="text" name="search" placeholder="Cari proposal..." class="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500" value="{{ request()->get('search') }}">
-                <button type="submit" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">Search</button>
+                <input type="text" name="search" placeholder="Cari proposal..."
+                    class="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value="{{ request()->get('search') }}">
+                <button type="submit"
+                    class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">Search</button>
             </form>
         </div>
 
@@ -31,9 +34,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if($proposals->isEmpty())
+                    @if ($proposals->isEmpty())
                         <tr>
-                            <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data yang terdaftar</td>
+                            <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data yang terdaftar
+                            </td>
                         </tr>
                     @else
                         @foreach ($proposals as $index => $proposal)
@@ -42,20 +46,28 @@
                                 <td class="px-4 py-3">{{ $proposal->nama }}</td>
                                 <td class="px-4 py-3">{{ $proposal->npm }}</td>
                                 <td class="px-4 py-3">{{ $proposal->judul }}</td>
-                                <td class="px-4 py-3">{{ $proposal->dospem ? $proposal->dospem->nama : '-' }}</td>
                                 <td class="px-4 py-3">
-                                    <span class="px-2 py-1 rounded {{ $proposal->status == 'Diterima' ? 'bg-green-200 text-green-700' : ($proposal->status == 'Revisi' ? 'bg-yellow-200 text-yellow-700' : 'bg-gray-200 text-gray-700') }} text-sm font-semibold">
+                                    @if ($proposal->dospem && is_object($proposal->dospem))
+                                        {{ $proposal->dospem->nama }}
+                                    @else
+                                        Tidak ada dosen
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span
+                                        class="px-2 py-1 rounded {{ $proposal->status == 'Diterima' ? 'bg-green-200 text-green-700' : ($proposal->status == 'Revisi' ? 'bg-yellow-200 text-yellow-700' : 'bg-gray-200 text-gray-700') }} text-sm font-semibold">
                                         {{ $proposal->status }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-600">{{ $proposal->pesan ?? '-' }}</td>
                                 <td class="px-4 py-3">
                                     <!-- Tombol Edit -->
-                                    <a href="{{ route('admin.proposal.edit', $proposal->id) }}" class="text-blue-600 hover:text-blue-800 mr-4 transform hover:scale-110 transition duration-200">Edit</a>
-                                    
+                                    <a href="{{ route('admin.proposal.edit', $proposal->id) }}"
+                                        class="text-blue-600 hover:text-blue-800 mr-4 transform hover:scale-110 transition duration-200">Edit</a>
+
                                     <!-- Tombol Hapus -->
-                                    <button 
-                                        class="text-red-600 hover:text-red-800 transform hover:scale-110 transition duration-200" 
+                                    <button
+                                        class="text-red-600 hover:text-red-800 transform hover:scale-110 transition duration-200"
                                         onclick="confirmDelete({{ $proposal->id }})">
                                         Delete
                                     </button>
@@ -93,7 +105,8 @@
 
     <!-- Form Hapus Proposal -->
     @foreach ($proposals as $proposal)
-        <form id="delete-form-{{ $proposal->id }}" action="{{ route('admin.proposal.destroy', $proposal->id) }}" method="POST" class="hidden">
+        <form id="delete-form-{{ $proposal->id }}" action="{{ route('admin.proposal.destroy', $proposal->id) }}"
+            method="POST" class="hidden">
             @csrf
             @method('DELETE')
         </form>

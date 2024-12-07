@@ -12,9 +12,6 @@ class ProposalController extends Controller
     // Mahasiswa menyimpan data proposal
     public function store(Request $request)
     {
-        // Tambahkan log awal untuk memulai proses
-        Log::info('Mulai proses penyimpanan data proposal oleh mahasiswa.', ['request' => $request->all()]);
-
         $request->validate([
             'nama' => 'required|string|max:255',
             'npm' => 'required|string|max:20',
@@ -23,16 +20,8 @@ class ProposalController extends Controller
         ]);
 
         try {
-            // Log sebelum upload file
-            Log::info('Proses upload file dimulai.');
-
-            // Mengunggah file proposal ke storage
             $filePath = $request->file('file_proposal')->store('proposals', 'public');
 
-            // Log setelah file berhasil diupload
-            Log::info('File berhasil diupload.', ['filePath' => $filePath]);
-
-            // Menyimpan data proposal ke database
             $proposal = Proposal::create([
                 'nama' => $request->nama,
                 'npm' => $request->npm,
@@ -43,19 +32,13 @@ class ProposalController extends Controller
                 'dospem' => null, // Belum ada dosen pembimbing
             ]);
 
-            // Log setelah data berhasil disimpan
-            Log::info('Proposal berhasil disimpan ke database.', ['proposal' => $proposal]);
-
-            // Redirect dengan pesan sukses
             return redirect('/mahasiswa')->with('success', 'Proposal berhasil diajukan!');
         } catch (\Exception $e) {
-            // Log jika terjadi kesalahan
             Log::error('Terjadi kesalahan saat menyimpan data proposal.', [
                 'error' => $e->getMessage(),
                 'stack' => $e->getTraceAsString(),
             ]);
 
-            // Redirect dengan pesan error
             return redirect('/mahasiswa')->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi!');
         }
     }
@@ -65,7 +48,6 @@ class ProposalController extends Controller
     {
         $query = Proposal::query();
 
-        // Pencarian berdasarkan nama, npm, atau judul
         if ($request->has('search')) {
             $searchTerm = $request->get('search');
             $query->where('nama', 'like', "%{$searchTerm}%")
@@ -73,11 +55,10 @@ class ProposalController extends Controller
                 ->orWhere('judul', 'like', "%{$searchTerm}%");
         }
 
-        // Memuat relasi dospem dan mengambil data proposal yang sesuai dengan query
         $proposals = $query->with('dospem')->get();
-        
+
         foreach ($proposals as $proposal) {
-            Log::info('Proposal Dospem:', ['dospem' => $proposal->dospem]);
+            Log::info('Proposal Dospem:', ['proposal' => $proposal->dospem]);
         }
 
         return view('admin.index', compact('proposals'));
