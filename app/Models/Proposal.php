@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Proposal extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'nama',
         'npm',
@@ -21,5 +22,11 @@ class Proposal extends Model
     public function dospem()
     {
         return $this->belongsTo(Dosen::class, 'dospem_id');
+    }
+
+    // Relasi untuk jurusan_proposals
+    public function jurusanProposal()
+    {
+        return $this->hasOne(JurusanProposal::class, 'proposal_id');
     }
 }
