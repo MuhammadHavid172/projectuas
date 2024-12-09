@@ -25,8 +25,13 @@ class Proposal extends Model
     }
 
     // Relasi untuk jurusan_proposals
+    // public function jurusanProposal()
+    // {
+    //     return $this->hasOne(JurusanProposal::class, 'proposal_id');
+    // }
+
     public function jurusanProposal()
     {
-        return $this->hasOne(JurusanProposal::class, 'proposal_id');
+        return $this->hasOne(JurusanProposal::class);
     }
 }

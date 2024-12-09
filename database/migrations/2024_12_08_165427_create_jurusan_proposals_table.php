@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up()
     {
-        // php artisan make:migration create_jurusan_proposals_table
         Schema::create('jurusan_proposals', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('proposal_id');  // Menambahkan kolom proposal_id
             $table->string('nama');
             $table->string('npm');
             $table->string('judul');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status', ['Menunggu', 'Diterima', 'Revisi']);
             $table->timestamps();
 
+            $table->foreign('proposal_id')->references('id')->on('proposals')->onDelete('cascade'); // Menambahkan foreign key untuk proposal_id
             $table->foreign('dospem_id')->references('id')->on('dosen')->onDelete('set null');
         });
     }

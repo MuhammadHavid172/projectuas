@@ -21,8 +21,13 @@ class JurusanProposal extends Model
     ];
 
     // Relasi ke Proposal
+    // public function proposal()
+    // {
+    //     return $this->belongsTo(Proposal::class, 'proposal_id');
+    // }
+
     public function proposal()
     {
-        return $this->belongsTo(Proposal::class, 'proposal_id');
+        return $this->belongsTo(Proposal::class);
     }
 }
