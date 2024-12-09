@@ -25,8 +25,11 @@ Route::middleware(['auth'])->group(function () {
         return view('mahasiswa.create');
     })->name('mahasiswa.create');
     Route::post('/mahasiswa', [ProposalController::class, 'store'])->name('mahasiswa.store');
-});
+    Route::get('/admin/proposal/{id}/edit', [ProposalController::class, 'edit'])->name('admin.proposal.edit');
+    Route::get('/admin', [ProposalController::class, 'adminIndex'])->name('admin.index');
+    Route::delete('/admin/proposal/{id}', [ProposalController::class, 'destroy'])->name('admin.proposal.destroy');
+    Route::put('/admin/proposal/{id}', [ProposalController::class, 'update'])->name('admin.proposal.update');
 
-Route::get('/admin/proposal/{id}/edit', [ProposalController::class, 'edit'])->name('admin.proposal.edit');
-Route::delete('/admin/proposal/{id}', [ProposalController::class, 'destroy'])->name('admin.proposal.destroy');
-Route::put('/admin/proposal/{id}', [ProposalController::class, 'update'])->name('admin.proposal.update');
+    // Route untuk Jurusan
+    Route::get('/jurusan', [ProposalController::class, 'jurusanIndex'])->name('jurusan.index');
+});
