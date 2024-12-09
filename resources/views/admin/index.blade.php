@@ -5,22 +5,24 @@
 @section('content')
 <div class="container mx-auto p-6">
     <!-- Judul Halaman -->
-    <h1 class="text-4xl font-semibold text-center text-blue-600 mb-6">Daftar Pendaftaran Proposal</h1>
+    <h1 class="text-5xl font-semibold text-center text-blue-600 mb-8">Daftar Pendaftaran Proposal</h1>
 
     <!-- Form Pencarian -->
     <div class="mb-4 flex justify-end">
         <form method="GET" action="{{ route('admin.index') }}" class="flex items-center">
             <input type="text" name="search" placeholder="Cari proposal..."
-                class="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="px-2 py-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 sm:w-80"
                 value="{{ request()->get('search') }}">
             <button type="submit"
-                class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">Search</button>
+                class="ml-2 px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                Search
+            </button>
         </form>
     </div>
 
     <!-- Tabel Pendaftaran Proposal -->
-    <div class="overflow-x-auto bg-white shadow-lg rounded-lg p-4">
-        <table class="min-w-full table-auto">
+    <div class="overflow-x-auto bg-white shadow-2xl rounded-lg p-6 mt-6">
+        <table class="min-w-full table-auto text-sm">
             <thead class="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
                 <tr>
                     <th class="px-4 py-3 text-left">No</th>
@@ -36,12 +38,11 @@
             <tbody>
                 @if ($proposals->isEmpty())
                 <tr>
-                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data yang terdaftar
-                    </td>
+                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">Belum ada data yang terdaftar</td>
                 </tr>
                 @else
                 @foreach ($proposals as $index => $proposal)
-                <tr class="border-t hover:bg-gray-100 transition duration-300">
+                <tr class="border-t hover:bg-gray-50 transition duration-300">
                     <td class="px-4 py-3">{{ $index + 1 }}</td>
                     <td class="px-4 py-3">{{ $proposal->nama }}</td>
                     <td class="px-4 py-3">{{ $proposal->npm }}</td>
@@ -55,7 +56,7 @@
                     </td>
                     <td class="px-4 py-3">
                         <span
-                            class="px-2 py-1 rounded {{ $proposal->status == 'Diterima' ? 'bg-green-200 text-green-700' : ($proposal->status == 'Revisi' ? 'bg-yellow-200 text-yellow-700' : 'bg-gray-200 text-gray-700') }} text-sm font-semibold">
+                            class="px-3 py-1 rounded-full {{ $proposal->status == 'Diterima' ? 'bg-green-200 text-green-800' : ($proposal->status == 'Revisi' ? 'bg-yellow-200 text-yellow-800' : 'bg-gray-200 text-gray-800') }} text-sm font-semibold">
                             {{ $proposal->status }}
                         </span>
                     </td>
@@ -63,10 +64,10 @@
                     <td class="px-4 py-3">
                         <!-- Tombol Edit -->
                         <a href="{{ route('admin.proposal.edit', $proposal->id) }}"
-                            class="text-blue-600 hover:text-blue-800 mr-4 transform hover:scale-110 transition duration-200">Edit</a>
+                            class="text-blue-600 hover:text-blue-800 transition duration-300 transform hover:scale-110">Edit</a>
                         <!-- Tombol Hapus -->
                         <button
-                            class="text-red-600 hover:text-red-800 transform hover:scale-110 transition duration-200"
+                            class="text-red-600 hover:text-red-800 transition duration-300 transform hover:scale-110"
                             data-id="{{ $proposal->id }}"
                             onclick="confirmDelete(this)">
                             Delete
@@ -86,7 +87,6 @@
 <script>
     function confirmDelete(button) {
         const id = button.getAttribute('data-id'); // Ambil nilai dari data-id
-        console.log('ID yang akan dihapus:', id); // Debugging
         Swal.fire({
             title: 'Apakah Anda yakin?',
             text: "Data ini akan dihapus secara permanen!",
