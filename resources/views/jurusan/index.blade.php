@@ -23,15 +23,19 @@
                <td colspan="5" class="px-4 py-2 text-center text-gray-500">Belum ada data yang diterima</td>
             </tr>
             @else
-            @foreach ($proposals as $index => $proposal)
-            <tr class="border-t hover:bg-gray-100 transition duration-300">
-               <td class="px-4 py-3">{{ $index + 1 }}</td>
-               <td class="px-4 py-3">{{ $proposal->nama }}</td>
-               <td class="px-4 py-3">{{ $proposal->npm }}</td>
-               <td class="px-4 py-3">{{ $proposal->judul }}</td>
-               <td class="px-4 py-3">{{ $proposal->dospem->nama }}</td>
+            @foreach ($proposals as $jurusanProposal)
+            <tr>
+               <td>{{ $jurusanProposal->proposal_id }}</td>
+               <td>
+                  @if ($jurusanProposal->proposal && $jurusanProposal->proposal->dospem)
+                  {{ $jurusanProposal->proposal->dospem->nama }}
+                  @else
+                  Tidak ada dospem
+                  @endif
+               </td>
             </tr>
             @endforeach
+
             @endif
          </tbody>
       </table>

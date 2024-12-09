@@ -149,16 +149,15 @@ class ProposalController extends Controller
                 'dospem' => $proposal->dospem->nama,
             ]);
 
-            // Simpan data ke tabel jurusan_proposals
-            DB::table('jurusan_proposals')->insert([
+            // Simpan data ke tabel jurusan_proposals menggunakan Eloquent
+            JurusanProposal::create([
                 'proposal_id' => $proposal->id,
                 'nama' => $proposal->nama,
                 'npm' => $proposal->npm,
                 'judul' => $proposal->judul,
+                'file_proposal' => $proposal->file_proposal, // Menambahkan file proposal
                 'dospem_id' => $proposal->dospem_id,
                 'status' => $proposal->status,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
 
             Log::info('Data proposal berhasil dikirim ke jurusan.');
@@ -172,10 +171,24 @@ class ProposalController extends Controller
     // Jurusan menerima data dari admin
     public function jurusanIndex()
     {
-        // Data proposal yang telah diterima di jurusan_proposals
+        // Mengambil proposal yang diterima beserta dospemnya
         $proposals = JurusanProposal::with('proposal.dospem') // Mengambil dosen dari relasi proposal
             ->where('status', 'Diterima')
             ->get();
+
+        // Log data proposal dan dospem yang diterima
+        Log::info('Data proposals diterima dengan dospem: ', $proposals->map(function ($jurusanProposal) {
+            if ($jurusanProposal->proposal) {
+                return [
+                    'proposal_id' => $jurusanProposal->proposal_id,
+                    'dospem' => $jurusanProposal->proposal->dospem ? $jurusanProposal->proposal->dospem->nama : 'Tidak ada dospem',
+                ];
+            }
+            return [
+                'proposal_id' => $jurusanProposal->proposal_id,
+                'dospem' => 'Tidak ada proposal',
+            ];
+        })->toArray());
 
         return view('jurusan.index', compact('proposals'));
     }
